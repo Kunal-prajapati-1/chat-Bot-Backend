@@ -10,7 +10,7 @@ const setAuthCookie = (res, token) => {
         secure: process.env.NODE_ENV === "production",
 
         // Local: lax
-        // Production: allows Vercel frontend -> Render backend cookie
+        // Production: allows Render frontend -> Render backend cookie
         sameSite:
             process.env.NODE_ENV === "production"
                 ? "none"
