@@ -58,15 +58,15 @@ function inititateSocket(httpServer) {
     socket.on("send_Msg", async (msgPayload) => {
       console.log(msgPayload)
       try {
-        const { chatId, Query } = msgPayload ?? {};
-        // Validation for chat_ID and Query
-        if (!chatId || typeof Query !== "string" || !Query.trim()) {
+        const { chatId, query } = msgPayload ?? {};
+        // Validation for chat_ID and query
+        if (!chatId || typeof query !== "string" || !query.trim()) {
           return socket.emit("chat_error", {
             message: "Invalid message",
           });
         }
 
-        const query = Query.trim();
+        query = query.trim();
 
         if (query.length > 2000) {
           return socket.emit("chat_error", {
