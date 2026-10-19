@@ -66,9 +66,9 @@ function inititateSocket(httpServer) {
           });
         }
 
-        query = query.trim();
+        const Query = query.trim();
 
-        if (query.length > 2000) {
+        if (Query.length > 2000) {
           return socket.emit("chat_error", {
             message: "Message is too long",
           });
@@ -84,37 +84,37 @@ function inititateSocket(httpServer) {
             message: "Chat not found",
           });
         }
-        // console.log("query ", query, "chatId ", chatId);
+        // console.log("Query ", Query, "chatId ", chatId);
         //✅ create msg
         const new_Msg = await msgModel.create({
           chat: chatId,
           user: socket.user._id,
-          title: query,
+          title: Query,
           role: "user",
         });
 
         console.log("new msg ", new_Msg);
 
-        //✅ convert query to embedding (vector)
-        const Embedding = await generateEmbeddings(query);
-        console.log("query embedding ", Embedding);
+        //✅ convert Query to embedding (vector)
+        const Embedding = await generateEmbeddings(Query);
+        console.log("Query embedding ", Embedding);
         console.log("msg id ", new_Msg._id);
 
-        //✅ search query in pineCone vector database
+        //✅ search Query in pineCone vector database
         const queryResult = await queryPineCone({
           queryVector: Embedding,
           limit: 15,
           userId: socket.user._id,
         });
 
-        //✅ upsert query embedding to pineCone
+        //✅ upsert Query embedding to pineCone
         const upsertRes = await upsertToPineCone({
           vectors: Embedding,
           msg_id: new_Msg._id,
           metadata: {
             chatId: chatId,
             userId: socket.user._id,
-            text: query,
+            text: Query,
           },
         });
 
