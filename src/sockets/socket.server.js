@@ -56,9 +56,9 @@ function inititateSocket(httpServer) {
 
     //✅ listen for send_Msg
     socket.on("send_Msg", async (msgPayload) => {
+      console.log(msgPayload)
       try {
-        const { chatId, Query } = msgPayload;
-        console.log(msgPayload)
+        const { chatId, Query } = msgPayload ?? {};
         // Validation for chat_ID and Query
         if (!chatId || typeof Query !== "string" || !Query.trim()) {
           return socket.emit("chat_error", {
